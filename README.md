@@ -69,7 +69,9 @@ Clearly a better solution was needed. Trackr was thus born.
 - `user_id`
 - `Company/User`
 
+## Credits
 
+- Abhimanyu M A @abhimanyuma abhi@manyu.in
 
 
 
