@@ -14,17 +14,17 @@ class UsersController < ApplicationController
     @counterstart=(User.per_page*(@pagenum-1))+1
     respond_to do |format|
       format.html
-      format.json do 
-        @allusers = User.where(level: Global.level[:superadmin] .. Global.level[:disabled]).where("name like ?", "%#{params[:q]}%") 
-        render :json => @allusers 
-        
+      format.json do
+        @allusers = User.where(level: Global.level[:superadmin] .. Global.level[:disabled]).where("name like ?", "%#{params[:q]}%")
+        render :json => @allusers
+
       end
       @usr=User.all
       format.csv { render text: User.to_csv() }
       #format.xlsx { send_data @usr.to_csv(col_sep: "\t") }
       format.xlsx
     end
-    
+
   end
   def show
   	@user=User.find(params[:id])
@@ -44,9 +44,9 @@ class UsersController < ApplicationController
       @team.save
       sign_in @user
   		flash[:success] = "Welcome to the Sample App!"
-      
+
   		redirect_to @user
-      
+
   	else
   		render 'new'
   	end
@@ -63,6 +63,7 @@ class UsersController < ApplicationController
     @user.save
     redirect_to users_path
   end
+
   def User.to_csv
     CSV.generate do |csv|
       csv << column_names

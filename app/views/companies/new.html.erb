@@ -1,6 +1,12 @@
 <% provide(:title,'Add a Company') %>
 <div class="row pagination-centered">
   <div class="span12">
-    <%= render 'companies/form' , object: @company %>
+    <% if(@company.errors.has_key? :user) %>
+      <p class="alert alert-danger">
+	<%= @company.errors[:user].first %>
+      </p>
+    <% else %>
+      <%= render 'companies/form' , object: @company %>
+    <% end %>
   </div>
 </div> <!-- /container -->

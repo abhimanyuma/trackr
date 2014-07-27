@@ -4,24 +4,27 @@ class CompaniesController < ApplicationController
 
     #before_filter :correct_user, only: []
   before_filter :admin_user, only: [:destroy]
-  
-  autocomplete :user, :name, :full => true 
+
+  autocomplete :user, :name, :full => true
   def new
-  	@company=Company.new
+    @company=Company.new
+    if(current_user.teams.empty?)
+      @company.errors[:user] = "You must be a member of any team to add a new company"
+    end
   end
+
   def create
-  	@company = Company.new (params[:company])
+    @company = Company.new (params[:company])
     @company.teams << current_user.teams.first
-  	if @company.save
+    if @company.save
       #sign_in @user
-  		flash[:success] = "Company created"
-      
-  		  redirect_to @company
-      
-  	else
-  		render 'new'
-  	end
+      flash[:success] = "Company created"
+      redirect_to @company
+    else
+      render 'new'
+    end
   end
+
   def show
     @company=Company.find(params[:id])
     can_view_else_redirect (@company)
@@ -30,16 +33,19 @@ class CompaniesController < ApplicationController
     @logs=@company.logs.order("created_at DESC").paginate(page: params[:page])
     @newlog=@company.logs.build
   end
+
   def edit
     @company=Company.find(params[:id])
     @contacts=@company.contacts.where(:active => true)
     can_view_else_redirect (@company)
   end
+
   def destroy
     Company.find(params[:id]).destroy
     flash[:success]="Company Profile Deleted."
     redirect_to companies_url
   end
+
   def index
     @counterstart=1;
     if params[:team_id]
@@ -73,7 +79,7 @@ class CompaniesController < ApplicationController
             @companies << company
         end
       end
-      
+
     end
     respond_to do |format|
         format.html # /
@@ -82,6 +88,7 @@ class CompaniesController < ApplicationController
         format.xlsx
     end
   end
+
   def update
     @company=Company.find(params[:id])
     can_view_else_redirect (@company)
@@ -93,6 +100,7 @@ class CompaniesController < ApplicationController
       render 'edit'
     end
   end
+
   def updatestatus
     @company=Company.find(params[:id])
     can_view_else_redirect (@company)
@@ -110,6 +118,7 @@ class CompaniesController < ApplicationController
     @company.save
     redirect_to @company
   end
+
   def activity
     @company=Company.find(params[:id])
     can_view_else_redirect (@company)
@@ -117,6 +126,7 @@ class CompaniesController < ApplicationController
     @company.save
     redirect_to @company
   end
+
   def Company.to_csv(companies)
     CSV.generate do |csv|
       csv << column_names
@@ -125,12 +135,13 @@ class CompaniesController < ApplicationController
       end
     end
   end
+
   private
     def signed_in_user
       unless signed_in?
         store_location
         redirect_to signin_url, notice: "Please sign in."
-      end  
+      end
     end
 
     def correct_user
@@ -142,6 +153,5 @@ class CompaniesController < ApplicationController
      def admin_user
       redirect_to(root_path) unless current_user.admin?
     end
-
 
 end

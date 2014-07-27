@@ -1,9 +1,9 @@
 
 
 <% provide(:title,"Companies") %>
-<h1>Companies 
+<h1>Companies
     <%= begin
-          if params[:team_id] 
+          if params[:team_id]
             "handled by #{Team.find(params[:team_id]).name}"
           elsif params[:user_id]
             "handled by #{User.find(params[:user_id]).name}"
@@ -38,8 +38,8 @@
   <tbody>
     <% @companies.each do |company| %>
     <tr>
-      <td class="hidden-desktop hidden-tablet visible-phone"><%=link_to company.name, company%> 
-        <%= company.status_text %> 
+      <td class="hidden-desktop hidden-tablet visible-phone"><%=link_to company.name, company%>
+        <%= company.status_text %>
       </td>
       <td class="hidden-phone"><%= link_to company.name, company%></td>
       <td class="hidden-phone hidden-tablet hidden-desktop"><%= company.location %></td>
@@ -57,7 +57,7 @@
           <%= "#{time.strftime('%d %b %y')}
                <br/>#{time_ago_in_words(time)}".html_safe %>
         <% rescue %>
-          <%= "Not contacted" %>
+	Not Contacted
         <% end %>
       </td>
       <td class="hidden-phone">
@@ -83,6 +83,3 @@
     <% end %>
   </tbody>
 </table>
-
-
-

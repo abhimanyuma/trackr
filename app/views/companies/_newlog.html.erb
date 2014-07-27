@@ -1,29 +1,22 @@
 <div>
-	<h3 class="heading">Contact Log<button class="btn btn-primary btn-success pull-right" id="log-entry-button">New log entry</button></h3>
+  <h3 class="heading">Contact Log<button class="btn btn-primary btn-success pull-right" id="log-entry-button">New log entry</button></h3>
 
-
-
-
-<%= form_for @newlog, :html => { id: "log-entry-form", class: "form-horizontal"} do |f| %>
-<%= render 'shared/error_messages', object: f.object %>
-  	<div class="control-group">
-  		
-    <%= f.text_area :content, placeholder: "Add new conversation" ,rows: 4, class:"span12"%>
-    	
-    </div>
+  <%= form_for @newlog, :html => { id: "log-entry-form", class: "form-horizontal"} do |f| %>
+  <%= render 'shared/error_messages', object: f.object %>
   <div class="control-group">
-  	<%= f.label :contact_id ,class: "control-label"%>
-  	<div class="controls">
-  		<%= select("log", :contact_id, @contacts.collect {|c| [ c.name, c.id ] }, {:include_blank => 'None'}) %>
-  		<%= f.hidden_field :company_id , value: @company.id %>
-  		<%= f.hidden_field :user_id , value: current_user.id%>
-  	</div>
+    <%= f.text_area :content, placeholder: "Add new conversation" ,rows: 4, class:"span12"%>
+  </div>
+  <div class="control-group">
+    <%= f.label :contact_id ,class: "control-label"%>
+    <div class="controls">
+      <%= select("log", :contact_id, @contacts.collect {|c| [ c.name, c.id ] }, {:include_blank => 'None'}) %>
+      <%= f.hidden_field :company_id , value: @company.id %>
+      <%= f.hidden_field :user_id , value: current_user.id%>
+    </div>
   </div>
   <div class="controls">
-  	<%= f.submit "Add log", class: "btn btn btn-primary" %>
-  	<%= link_to "Cancel","#",class: "btn btn-inverse pull-right", id: "log-entry-cancel" %>
+    <%= f.submit "Add log", class: "btn btn btn-primary" %>
+    <%= link_to "Cancel","#",class: "btn btn-inverse pull-right", id: "log-entry-cancel" %>
   </div>
-<% end %>
+  <% end %>
 </div>
-
-
