@@ -23,6 +23,8 @@ jQuery ->
   $('#company-table').dataTable
     sPaginationType: "full_numbers"
     bJQueryUI: true
+    columnDefs: [
+      { type: 'date-dd-mmm-yy', targets: 0 } ]
     aoColumns: [
       null,
       null,
