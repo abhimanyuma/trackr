@@ -1,16 +1,16 @@
 require "bundler/capistrano"
 load "config/recipes/sake.rb"
 
-server "172.31.76.192", :web, :app, :db, primary: true
+server "172.31.1.202", :web, :app, :db, primary: true
 
 set :application, "trackr"
-set :user, "administrator"
+set :user, "guru"
 set :deploy_to, "/home/#{user}/apps/#{application}"
 set :deploy_via, :remote_cache
 set :use_sudo, false
 
 set :scm, "git"
-set :repository, "git@github.com:spowebteam/#{application}.git"
+set :repository, "git@bitbucket.org:spoiitk/#{application}.git"
 set :branch, "production"
 
 default_run_options[:pty] = true
