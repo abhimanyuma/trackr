@@ -41,10 +41,20 @@
   <tbody>
     <% @companies.each do |company| %>
     <tr>
-      <td class="hidden-desktop hidden-tablet visible-phone"><%=link_to company.name, company%>
-        <%= company.status_text %>
-      </td>
-      <td class="hidden-phone"><%= link_to company.name, company%></td>
+      <% if company['no_access'] == true %>
+        <td class="hidden-desktop hidden-tablet visible-phone">
+          <b><%= company.name %></b>
+          <%= company.status_text %>
+        </td>
+        <td class="hidden-phone"><%= company.name %></td>
+      <% else %>
+        <td class="hidden-desktop hidden-tablet visible-phone">
+          <%= link_to company.name, company%>
+          <%= company.status_text %>
+        </td>
+        <td class="hidden-phone"><%= link_to company.name, company %></td>
+      <% end %>
+
       <td class="hidden-phone hidden-tablet hidden-desktop"><%= company.location %></td>
       <td class="hidden-phone"><%= company.status_text  %></td>
       <td class="hidden-phone">

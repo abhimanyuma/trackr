@@ -65,22 +65,26 @@ class CompaniesController < ApplicationController
       #@company_ids.uniq!
       @source = Company.find_all_by_id(@company_ids,:include => [:default_contact,:logs,:teams,:pointofcontact])
     else
-      @source=Company.all(:include => [:default_contact,:logs,:teams,:pointofcontact])
+      @source = Company.all(:include => [:default_contact,:logs,:teams,:pointofcontact])
     end
+
     if current_user.superadmin?
-      @companies=@source
+      @companies = @source
     elsif current_user.admin?
-      @companies=@source.select{|c| c.active?}
+      @companies = @source.select{|c| c.active?}
     elsif current_user.poweruser?
-      @companies=[]
-      @allcompanies=@source.select{|c| c.active?}
+      @companies = []
+      @allcompanies = @source.select{|c| c.active?}
       @allcompanies.each do |company|
         if ((company.teams & current_user.teams).any?) || (company.poc_id == current_user.id)
-            @companies << company
+          company['no_access'] = false
+        else
+          company['no_access'] = true
         end
+        @companies << company
       end
-
     end
+
     respond_to do |format|
         format.html # /
         format.json { render json: @companies}
