@@ -28,7 +28,7 @@ class User < ActiveRecord::Base
   has_many :managed_companies,
   :class_name => 'Company',
   :foreign_key => 'manager_id'
-  
+
   has_many :logs
   validates :name, presence: true , uniqueness: true,length: {minimum:2,maximum:100}
   VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i
@@ -39,7 +39,7 @@ class User < ActiveRecord::Base
   validates :password, presence:true , length: {minimum:6 }, :on => :create
   validates :password_confirmation, presence: true, :on => :create
 
-   def role 
+  def role
     if self.level == Global.level[:superadmin]
       return "superadmin"
     elsif self.level==Global.level[:admin]
@@ -74,21 +74,17 @@ class User < ActiveRecord::Base
   end
 
   private
-
     def create_remember_token
       self.remember_token = SecureRandom.urlsafe_base64
     end
 
     def correct_user
       @user=User.find(params[:id])
-
       redirect_to root_path, error:"Access Denied" unless current_user?(@user)
     end
 
     def set_deactivated
       self.level=127
     end
-
-   
 
 end

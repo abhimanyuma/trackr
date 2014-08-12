@@ -1,9 +1,9 @@
 class UsersController < ApplicationController
   before_filter :signed_in_user, only: [:index,:show,:edit,:update,:destroy]
-  before_filter :correct_user, only: [:edit,:update]
+  before_filter :self_or_admin, only: [:edit,:update]
   before_filter :admin_user, only: [:destroy,:editlevel]
-  def index
 
+  def index
     @counterstart=1;
     if current_user.superadmin?
       @users=User.all
@@ -26,30 +26,29 @@ class UsersController < ApplicationController
     end
 
   end
+
   def show
-  	@user=User.find(params[:id])
+    @user=User.find(params[:id])
   end
 
   def new
-  	@user= User.new
+    @user= User.new
   end
 
   def create
-  	@user = User.new (params[:user])
-  	if @user.save
+    @user = User.new (params[:user])
+    if @user.save
       @team=Team.new
       @team.name=@user.name
       @team.user_tokens="#{@user.id}"
       @team.set_single
       @team.save
       sign_in @user
-  		flash[:success] = "Welcome to the Sample App!"
-
-  		redirect_to @user
-
-  	else
-  		render 'new'
-  	end
+      flash[:success] = "Welcome to the Trackr!"
+      redirect_to @user
+    else
+      render 'new'
+    end
   end
 
   def editlevel
@@ -72,6 +71,7 @@ class UsersController < ApplicationController
       end
     end
   end
+
   def edit
     @user=User.find(params[:id])
   end
@@ -80,8 +80,10 @@ class UsersController < ApplicationController
     @user=User.find(params[:id])
     if @user.update_attributes(params[:user])
         flash[:success]="Profile updated"
-        sign_in @user
-        redirect_to @user
+        if current_user.id == @user.id
+          sign_in @user
+        end
+      redirect_to @user
     else
       render 'edit'
     end
@@ -94,10 +96,11 @@ class UsersController < ApplicationController
   end
 
   private
-    def correct_user
-      @user=User.find(params[:id])
-
-      redirect_to root_path, error:"Access Denied" unless current_user?(@user)
+    def self_or_admin
+      if !current_user.superadmin?
+        @user=User.find(params[:id])
+        redirect_to root_path, error:"Access Denied" unless current_user?(@user)
+      end
     end
 
 end
