@@ -1,8 +1,8 @@
 class CompaniesController < ApplicationController
-	before_filter :signed_in_user
+  before_filter :signed_in_user
   before_filter :power_user
 
-    #before_filter :correct_user, only: []
+  #before_filter :correct_user, only: []
   before_filter :admin_user, only: [:destroy]
 
   autocomplete :user, :name, :full => true
@@ -14,7 +14,7 @@ class CompaniesController < ApplicationController
   end
 
   def create
-    @company = Company.new (params[:company])
+    @company = Company.new(params[:company])
     @company.teams << current_user.teams.first
     if @company.save
       #sign_in @user
@@ -27,7 +27,7 @@ class CompaniesController < ApplicationController
 
   def show
     @company=Company.find(params[:id])
-    can_view_else_redirect (@company)
+    can_view_else_redirect(@company)
     @contacts=@company.contacts
     @default=@company.default_contact
     @logs=@company.logs.order("created_at DESC").paginate(page: params[:page])
@@ -37,7 +37,7 @@ class CompaniesController < ApplicationController
   def edit
     @company=Company.find(params[:id])
     @contacts=@company.contacts.where(:active => true)
-    can_view_else_redirect (@company)
+    can_view_else_redirect(@company)
   end
 
   def destroy
@@ -91,7 +91,7 @@ class CompaniesController < ApplicationController
 
   def update
     @company=Company.find(params[:id])
-    can_view_else_redirect (@company)
+    can_view_else_redirect(@company)
     if @company.update_attributes(params[:company])
         flash[:success]="Profile updated"
         #sign_in @user
@@ -103,7 +103,7 @@ class CompaniesController < ApplicationController
 
   def updatestatus
     @company=Company.find(params[:id])
-    can_view_else_redirect (@company)
+    can_view_else_redirect(@company)
     @log = @company.logs.build(params[:log])
     @prev_status=@company.status_text
     @company.status=params[:status]
@@ -111,7 +111,7 @@ class CompaniesController < ApplicationController
     @log.user_id=current_user.id
     begin
       @log.save
-    rescue Exception => e
+    rescue Exception => _
 
     end
     @company.status=params[:status]
@@ -121,7 +121,7 @@ class CompaniesController < ApplicationController
 
   def activity
     @company=Company.find(params[:id])
-    can_view_else_redirect (@company)
+    can_view_else_redirect(@company)
     @company.active=params[:active] if params[:active]
     @company.save
     redirect_to @company
@@ -150,7 +150,7 @@ class CompaniesController < ApplicationController
       redirect_to root_path, error:"Access Denied" unless current_user?(@user)
     end
 
-     def admin_user
+    def admin_user
       redirect_to(root_path) unless current_user.admin?
     end
 

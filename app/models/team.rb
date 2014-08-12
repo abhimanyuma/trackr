@@ -4,7 +4,7 @@ class Team < ActiveRecord::Base
   has_and_belongs_to_many :companies
   attr_reader :user_tokens
   attr_reader :company_tokens
-  
+
   validates :name, presence: true ,uniqueness: true, length: {minimum:2,maximum:100}
   validates :description, length: {maximum:500}
 
@@ -15,11 +15,12 @@ class Team < ActiveRecord::Base
   def single?
     self.single
   end
+
   def user_tokens=(ids)
-  	self.user_ids=ids.split(",")
+    self.user_ids=ids.split(",")
   end
 
   def company_tokens=(ids)
-  	self.company_ids=ids.split(",")
+    self.company_ids=ids.split(",")
   end
 end

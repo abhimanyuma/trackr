@@ -1,9 +1,12 @@
 class TeamsController < ApplicationController
-  before_filter :admin_user
+  before_filter :admin_user, only: [:new, :activity, :create,
+                                    :show, :edit,
+                                    :update, :destroy
+                                   ]
   # autocomplete :user, :name
   def new
     @user=current_user
-    @team=Team.new   
+    @team=Team.new
   end
 
   def activity
@@ -15,7 +18,7 @@ class TeamsController < ApplicationController
 
   def create
     @user = current_user
-    @team = Team.new (params[:team])
+    @team = Team.new(params[:team])
     if @team.save
       flash[:success] = "Team #{@team.name} Created"
       redirect_to teams_path
