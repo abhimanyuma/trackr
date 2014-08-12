@@ -8,27 +8,27 @@
         <%= @company.name %>
         <%= render 'companies/editbutton', object: @company, right: false %>
         <%= render 'companies/statuslist', object: @company %>
-      </h1> 
+      </h1>
       <div>
         <%= link_to "#{@company.url}" ,@company.url %>
       </div>
       <div>
           <p><%= @company.phone%></p>
           <p><%= @company.address %></p>
-      </div> 
+      </div>
       <div>
           <p>Point of Contact :
-            <%= if @company.pointofcontact  
-                  link_to @company.pointofcontact.name, @company.pointofcontact 
+            <%= if @company.pointofcontact
+                  link_to @company.pointofcontact.name, @company.pointofcontact
                 end
             %></p>
-          <p>Managed by : 
-            <%= if @company.manager 
-                  link_to @company.manager.name, @company.manager 
+          <p>Managed by :
+            <%= if @company.manager
+                  link_to @company.manager.name, @company.manager
                 end
             %></p>
       </div>
-      <hr /> 
+      <hr />
     </div>
 
     <!-- Contact Details -->
@@ -38,7 +38,7 @@
         <p>
           <% if @default && @default.active %>
             <strong><%= link_to @default.name, show_modal_company_contact_path(:company_id => @company.id,:id => @default.id), {:remote => true, 'data-controls-modal' =>  "contact-modal",'data-toggle'=>'modal', 'data-target'=>'#contact-modal'} %></strong>
-            <%= "(#{@default.designation})" %> 
+            <%= "(#{@default.designation})" %>
             <span class="badge badge-info pull-right">Default</span>
           <br><tel><%= "(M) #{@default.mobile}, (Off) #{@default.landline}" %>
           <br><a href='mailto:<%=@default.email%>'><%= @default.email %></a></p>
@@ -55,12 +55,12 @@
       <% else %>
        <h1> </h1><h1></h1>
         <div class="pagination-centered">
-          <%= link_to "Add Contact", new_company_contact_path(:company_id => @company.id),:class => "btn btn-inverse" %> 
+          <%= link_to "Add Contact", new_company_contact_path(:company_id => @company.id),:class => "btn btn-inverse" %>
         </div>
       <% end %>
       <br/>
     </div>
-    
+
     <hr />
     <div>
         <h4>Teams with access </h4>
@@ -83,8 +83,8 @@
           </div>
         <%= will_paginate @logs %>
         <% end %>
-    </div>   
-      
+    </div>
+
   </div>
   </div>
 </div>
@@ -99,5 +99,3 @@
   <div class="modal-footer">&nbsp;</div>
 
 </div>
-
-
