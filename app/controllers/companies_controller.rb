@@ -80,6 +80,7 @@ class CompaniesController < ApplicationController
           company['no_access'] = false
         else
           company['no_access'] = true
+          company.default_contact = nil
         end
         @companies << company
       end
