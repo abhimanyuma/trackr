@@ -19,11 +19,14 @@
   </small>
 </h1>
 
-<p>
-  Download:
-  <%= link_to "CSV", companies_path(format: "csv") %> |
-  <%= link_to "Excel", companies_path(format: "xlsx") %>
-</p>
+<% if current_user.admin? %>
+  <p>
+    Download:
+    <%= link_to "CSV", companies_path(format: "csv") %> |
+    <%= link_to "Excel", companies_path(format: "xlsx") %>
+  </p>
+<% end %>
+
 <hr />
 <table class="table table-striped table-hover table-bordered" id="company-table">
   <thead>

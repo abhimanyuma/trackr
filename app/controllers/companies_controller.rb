@@ -87,10 +87,22 @@ class CompaniesController < ApplicationController
     end
 
     respond_to do |format|
-        format.html # /
-        format.json { render json: @companies}
-        format.csv { render text: Company.to_csv(@companies) }
-        format.xlsx
+      format.html # /
+      format.json {
+        if current_user.admin?
+          render json: @companies
+        end
+      }
+      format.csv {
+        if current_user.admin?
+          render text: Company.to_csv(@companies)
+        end
+      }
+      format.xlsx {
+        if current_user.admin?
+          render xlsx: @companies
+        end
+      }
     end
   end
 
