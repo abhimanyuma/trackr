@@ -79,6 +79,9 @@ class CompaniesController < ApplicationController
         if ((company.teams & current_user.teams).any?) || (company.poc_id == current_user.id)
           company['no_access'] = false
         else
+          if(params[:access] == 'true')
+            next
+          end
           company['no_access'] = true
           company.default_contact = nil
         end
