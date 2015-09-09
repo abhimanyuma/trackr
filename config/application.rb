@@ -5,7 +5,7 @@ require 'csv'
 
 if defined?(Bundler)
   # If you precompile assets before deploying to production, use this line
-  Bundler.require(*Rails.groups(:assets => %w(development test)))
+  Bundler.require(*Rails.groups(:assets => %w(development test production)))
   # If you want your assets lazily compiled in production, use this line
   # Bundler.require(:default, :assets, Rails.env)
 end
@@ -65,5 +65,6 @@ module Trackr
     config.assets.version = '1.0'
 
     config.exceptions_app = self.routes
+    config.serve_static_assets = true
   end
 end
