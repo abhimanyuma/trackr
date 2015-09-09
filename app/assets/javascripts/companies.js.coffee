@@ -33,4 +33,5 @@ jQuery ->
       null,
       bSearchable: false,
       null,
-        bSearchable: false ]
+        bSearchable: false,
+        null ]

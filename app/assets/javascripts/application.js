@@ -17,4 +17,5 @@
 //= require jquery-ui
 //= require dataTables/jquery.dataTables
 //= require dateSorter
+//= require bootstrap-datepicker
 //= require_tree .
