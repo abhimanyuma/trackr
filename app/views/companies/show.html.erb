@@ -84,7 +84,11 @@
         <%= will_paginate @logs %>
         <% end %>
     </div>
-
+    <div>
+      <h4>Specify Next calling DateTime:</h4><i>Format: YYYY-MM-DD</i>
+      <%= render 'companies/updatecalldate', object: @company%>
+      </div>
+    </div>
   </div>
   </div>
 </div>
