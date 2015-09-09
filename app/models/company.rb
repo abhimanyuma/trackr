@@ -1,5 +1,5 @@
 class Company < ActiveRecord::Base
-  attr_accessible :address, :location, :name, :phone, :url, 
+  attr_accessible :address, :location, :name, :phone, :url, :call_date,
                   :poc_name,:manager_name,:team_tokens, :description, :status,
                   :status_text, :default_contact, :default_contact_id, :poc_id,:manager_id
   

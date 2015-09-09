@@ -40,6 +40,7 @@
       <th class="hidden-phone">Last Contact</th>
       <th class="hidden-phone">HR Name</th>
       <th class="hidden-phone">HR Contact</th>
+      <th class="hidden-phone">Call Date</th>
     </tr>
   </thead>
   <tbody>
@@ -95,6 +96,9 @@
         <% rescue %>
           <%= "No HR Contact" %>
         <% end %>
+      </td>
+      <td class="hidden-phone">
+        <%= company.call_date %>
       </td>
     </tr>
     <% end %>

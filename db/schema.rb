@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130828164634) do
+ActiveRecord::Schema.define(:version => 20150909133907) do
 
   create_table "companies", :force => true do |t|
     t.string   "name"
@@ -28,6 +28,7 @@ ActiveRecord::Schema.define(:version => 20130828164634) do
     t.integer  "status"
     t.string   "description"
     t.integer  "default_contact_id"
+    t.date     "call_date"
   end
 
   add_index "companies", ["poc_id", "manager_id"], :name => "index_companies_on_poc_id_and_manager_id"
