@@ -2,76 +2,32 @@
 
 Trackr /t'rækə(r)/ is a simple web application to track contact with companies written in Ruby on Rails.
 
-## Motivation
+# Deployment
 
-The motivation came out of the problem of knowledge transfer that was very much a problem at Students' Placement Office, IIT Kanpur. Every year the placement team was composed of almost all new students with 1 or 2 common persons, which meant "Knowledge Transfer" between batches were important. The methods adopted were
-1. Google docs
-2. Reading mail archives
-3. Contacting last year's team.
+Ensure you have nginx installed (`apt-get install nginx` or equivalent), 
 
-Clearly a better solution was needed. Trackr was thus born. 
+`cp trackr.conf.nginx /etc/nginx/sites-available/trackr.conf`
 
-## Models
+link via: `sudo ln -s /etc/nginx/sites-available/trackr.conf /etc/nginx/sites-enabled/`
 
-`User` are the user that will be allowed access to the site contains
-- `Username/Password/Salt` in typical RoR fashion
-- `Name` 
-- `Email` currently restricted to @iitk.ac.in
-- `Userlevel` - A number with 0 being admin and in general lower number indicates higher authrority. 
+Generate a certificate:
 
-    In future we plan to have a authorization module which will be roughly associate a `number` of the model of chmod in linux to the entries. Where authorization has values from 
-        + 0 - Not visible
-        + 1 - Read
-        + 2 - Edit subject to Authorization
-        + 4 - Edit without Authorization
-        + 8 - Authorize edits
+`# openssl req -new -x509 -days 365 -nodes -out /etc/nginx/trackr.pem -keyout /etc/nginx/trackr.key`
 
-- `Phone Number` - Stores user phone number
-- `Identifier` - Used to store unique identifier for the user, which is roll number in our case. 
+Add `127.0.0.1 trackr.dev` to `/etc/hosts` and reload nginx
 
-- HasMany:`tags`- Tags are generalizations for making groups of people and users 
+Specify `APP_ROOT` & `AS_USER` variables in `config/unicorn_init.sh`
 
+Specify `root` variable in `config/unicorn.rb`
 
-`Company` for the companies tracked which has 
-- `Name`
-- `Link`
-- `Phone number`
-- `Location`
-- `Address`
-- `Point of Contact` - User_id of the person assigned to the company
-- `Managed by` - User_id of the person managing it. 
-- `Status` - Which stage it has reached, identified by code numbers
-- `Summary`- The total summary of the company till now
+> fix other variable if need be
 
-- HasMany: `tags`
-- HasMany: `Company_log`
-- HasMany: `Company_contacts`
+To deploy:
+> ensure db is created; from inside `trackr/` folder
 
-`Company_log` - Contains the content of the company log interaction 
-- `Contacted by`
-- `Company-contact`
-- `Time Stamp`
-- `Tone` - Very positive to very negative
-- `Content` - What was the conversation that happened
+`./config/unicorn_init.sh start`
 
-`Company_contact` - Has the details of the company persons 
-- `Name` 
-- `Designation`
-- `Landline`
-- `Mobile phone`
-- `Email Id`
-- `Address`
-
-`Tags` is a special kind of model I still haven't decided the method to implement since it is used BOTH for companies and users and we need the function to find the users who have the same tags as companies
-- `Tag Name`
-- `Tag Description`
-- `company_id`
-- `user_id`
-- `Company/User`
 
 ## Credits
 
 - Abhimanyu M A @abhimanyuma abhi@manyu.in
-
-
-
