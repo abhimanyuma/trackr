@@ -1,0 +1,49 @@
+upstream unicorn {
+  server unix:/tmp/unicorn.trackr.sock fail_timeout=0;
+}
+
+# HTTP Server
+server {  
+    root /usr/share/nginx/www;
+    index index.html index.htm
+
+    server_name trackr.dev;
+    return 301 https://$server_name$request_uri;
+}
+
+# HTTPS Server
+server {
+  listen 443;
+  server_name trackr.dev;
+
+  # Change this path
+  root /home/hack/trackr/;
+  try_files $uri/index.html $uri @unicorn;
+
+  ssl on;
+  ssl_certificate /etc/nginx/trackr.pem;
+  ssl_certificate_key /etc/nginx/trackr.key;
+
+  ssl_session_timeout 5m;                                               
+                                                                      
+  ssl_protocols SSLv3 TLSv1;                                            
+  ssl_ciphers ALL:!ADH:!EXPORT56:RC4+RSA:+HIGH:+MEDIUM:+LOW:+SSLv3:+EXP;
+  ssl_prefer_server_ciphers on;                                         
+
+  
+  location / {
+    location /assets/ {
+      gzip_static on;
+      expires max;
+      add_header Cache-Control public;
+      proxy_pass http://unicorn;
+    }
+    proxy_redirect off;
+    proxy_set_header X-Forward-Proto https;
+    proxy_pass http://unicorn;
+  }
+ 
+  error_page 500 502 503 504 /500.html;
+  client_max_body_size 4G;
+  keepalive_timeout 10;
+}
